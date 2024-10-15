@@ -50,7 +50,6 @@ galaxy_name = final_catalog.parent.parent.name
 #band_select = "f555w" # edit this here to get new data
 bands = utils.get_drc_image(final_catalog.parent.parent)
 image_data = bands[band_select][0]
-#image_data, _, _ = utils.get_drc_image(final_catalog.parent.parent)
 psf = fits.open(psf_path)["PRIMARY"].data
 
 # the convolution requires the psf to be normalized, and without any negative values

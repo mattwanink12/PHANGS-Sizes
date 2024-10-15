@@ -229,10 +229,6 @@ for row in catalog:
 
 # get age in years
 catalog["SEDfix_age"] *= 1e6
-# fix x and y as cluster indexing isn't an issue in PHANGS (alternatively fix line 1010-1011 in derived_properties.py
-# HANDLED
-#catalog["x"] -= 1
-#catalog["y"] -= 1
 # then calculate specific star formation rate
 catalog["galaxy_ssfr"] = catalog["galaxy_sfr"] / catalog["galaxy_stellar_mass"]
 

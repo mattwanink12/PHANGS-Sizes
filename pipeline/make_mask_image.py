@@ -43,10 +43,9 @@ min_closeness = 3  # how far stars have to stay away from the center
 star_radius_fwhm_multiplier = 2  # We mask pixels that are within this*FWHM of a star
 
 galaxy_name = mask_image_path.parent.parent.name
-band_select = sys.argv[4] # edit this here to get new data
+band_select = sys.argv[4]
 bands = utils.get_drc_image(mask_image_path.parent.parent)
 image_data = bands[band_select][0]
-#image_data, _, _ = utils.get_drc_image(mask_image_path.parent.parent)
 
 sigma_data = fits.open(sigma_image_path)["PRIMARY"].data
 clusters_table = table.Table.read(cluster_catalog_path, format="ascii.ecsv")
@@ -266,7 +265,7 @@ for cluster in tqdm(clusters_table):
                     else:
                         # check some things
                         if pixel_is_multiple_clusters(x, y):
-                            #raise RuntimeError(f"{galaxy_name} {x} {y}")
+                            #raise RuntimeError(f"{galaxy_name} {x} {y}") # This line was causing issues with f275w files, investigate further!
                             print(f"WARNING: {galaxy_name} {x} {y}")
                         set_pixel_isolated_star(x, y)
 

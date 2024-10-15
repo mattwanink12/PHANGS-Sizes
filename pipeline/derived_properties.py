@@ -56,7 +56,6 @@ home_dir = size_dir.parent
 field_name = home_dir.name
 bands = utils.get_drc_image(home_dir)
 image_data = bands[band_select][0]
-#image_data, _, _ = utils.get_drc_image(home_dir)
 fits_catalog = table.Table.read(fits_catalog_path, format="hdf5")
 sigma_data = fits.open(sigma_image_path)["PRIMARY"].data
 mask_data = fits.open(mask_image_path)["PRIMARY"].data
@@ -999,7 +998,7 @@ fits_catalog["reliable_mass"] = np.logical_and.reduce(
         m_min > 0, #fits_catalog["mass_msun_min"] > 0,
         m_min <= m, #fits_catalog["mass_msun_min"] <= fits_catalog["mass_msun"],
         m_max >= m, #fits_catalog["mass_msun_max"] >= fits_catalog["mass_msun"],
-        #fits_catalog["legus_q_prob"] > 1e-3, #
+        #fits_catalog["legus_q_prob"] > 1e-3,
         fits_catalog["PHANGS_REDUCEDCHISQ_MINCHISQ"] < 8,
         #~np.isnan(fits_catalog["legus_q_prob"]),
     ]
@@ -1010,10 +1009,6 @@ fits_catalog["reliable_mass"] = np.logical_and.reduce(
 # Cleanup
 #
 # ======================================================================================
-# Then add one back to the output catalog to be comparable to LEGUS results. This is
-# because of Python being zero indexed
-#fits_catalog["x_fitted_best"] += 1
-#fits_catalog["y_fitted_best"] += 1
 # can also delete the regular "x" and "y" columns, which are just to handle the zero
 # indexing of python vs the 1 indexing of fits
 del fits_catalog["x"]

@@ -26,10 +26,9 @@ final_sigma_image = Path(sys.argv[1]).absolute()
 size_dir = final_sigma_image.parent
 home_dir = size_dir.parent
 
-band_select = sys.argv[2] # edit this here to get new data
+band_select = sys.argv[2]
 bands = utils.get_drc_image(home_dir)
 image_data = bands[band_select][0]
-#image_data, _, _ = utils.get_drc_image(home_dir)
 
 # ======================================================================================
 #

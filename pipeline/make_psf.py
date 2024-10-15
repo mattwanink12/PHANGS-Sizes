@@ -109,7 +109,7 @@ star_cutouts = photutils.psf.extract_stars(nddata, star_table, size=psf_width)
 def distance(x1, y1, x2, y2):
     return np.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
     
-    
+# Aperture photometry function for CI estimation
 def do_ap_photometry(data, source_centroid, r_ap, bg_rin, bg_rout):
     """
     Args:
@@ -118,11 +118,9 @@ def do_ap_photometry(data, source_centroid, r_ap, bg_rin, bg_rout):
         r_ap:            Size (in pix) of source aperture
         bg_rin:          Inner radius (in pix) of background annulus
         bg_rout:         Outer radius (in pix) of background annulus
-        airmass:         Airmass of the image
-        filt:            Filter used for the image
         
     Returns:
-        Flux and flux error due to source, background subtracted
+        Flux, background subtracted
     """
     
     # Create the source and background apertures
@@ -201,7 +199,7 @@ def plot_radial_counts(data, source_centroid, Name):
 
 
 # Background estimate and calculate concentration index. Here I use the pixels farther than 8 pixels from the center for the backgrounds.
-# This value was determined by looking at the profiles. Concentration Index decribed as magnitude fifference between 1 pixel and 3 pixel apertures.
+# This value was determined by looking at the profiles. Concentration Index decribed as magnitude difference between 1 pixel and 3 pixel apertures.
 # CI and background estimation useful in creating quality cuts for our PSF stars.
 backgrounds = []
 con_inds = []
