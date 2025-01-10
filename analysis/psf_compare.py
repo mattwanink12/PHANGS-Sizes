@@ -41,7 +41,6 @@ psf_width = int(sys.argv[3])
 band_select = sys.argv[4] # edit this here to get new data
 bands = utils.get_drc_image(home_dir)
 image_data = bands[band_select][0]
-#image_data, _, _ = utils.get_drc_image(home_dir)
 # the extract_stars thing below requires the input as a NDData object
 nddata = NDData(data=image_data)
 
@@ -61,7 +60,6 @@ def get_star_list_and_psf(source):
 
 
 star_table_me, psf_me = get_star_list_and_psf("my")
-#star_table_legus, psf_legus = get_star_list_and_psf("legus")
 
 # ======================================================================================
 #
@@ -89,7 +87,6 @@ def visualize_psf(fig, ax, psf_data, scale="log"):
     # ax.remove_spines(["all"])
 
 
-#for psf, star_source in zip([psf_legus, psf_me], ["legus", "my"]):
 for psf, star_source in zip([psf_me], ["my"]):
     fig, axs = bpl.subplots(
         ncols=2,
@@ -176,11 +173,9 @@ def radial_profile_psf(ax, psf, color, label):
 
 
 fig, ax = bpl.subplots()
-#c_me = "#9EA4CA"
 c_me = colors.CSS4_COLORS
 c_legus = "#CD8486"
 # first go through all the stars
-#for star_table, color in zip([star_table_legus, star_table_me], [c_legus, c_me]):
 norm_const_list = []
 backgrounds = []
 for star_table, color in zip([star_table_me], [c_me]):
@@ -203,10 +198,8 @@ for star_table, color in zip([star_table_me], [c_me]):
                     background_values.append(image_data[y][x])
 
         values = np.array(values)
-        #print(values)
         # background subtract
         values -= np.median(background_values)
-        #print(values)
         # normalize the profile
         norm_const = np.sum(values)
         norm_const_list.append(norm_const)
@@ -217,13 +210,13 @@ for star_table, color in zip([star_table_me], [c_me]):
         # then bin then
         radii, values = bin(0.2, radii, values)
         
-        #print(np.sum(values))
-        local_back = np.median(background_values)#bg["col1"][i]
+        # calculate the median background value of the star and plot it as a horizontal
+        # line using the same normalization as the profile
+        local_back = np.median(background_values) # bg["col1"][i]
         backgrounds.append(local_back)
-        local_back /= norm_const #np.sum(background_values)
+        local_back /= norm_const
         local_back /= oversampling_factor ** 2
         local_back = abs(local_back)
-        print(local_back)
 
         ax.plot(radii, values, c=list(color)[i], lw=0.5)
         ax.axhline(y=local_back, color=list(color)[i], lw=0.5)
@@ -234,6 +227,8 @@ for star_table, color in zip([star_table_me], [c_me]):
 c_me = bpl.color_cycle[0]
 c_legus = bpl.color_cycle[3]
 
+# plot the average background of the total psf as an average of the stellar backgrounds with
+# the same normalization
 norm_const_list = np.array(norm_const_list)
 backgrounds = np.array(backgrounds)
 avg_background = np.median(abs(backgrounds)) / np.median(abs(norm_const_list))
@@ -241,7 +236,6 @@ avg_background /= oversampling_factor ** 2
 print("Avg Background: ", avg_background)
 ax.axhline(y=avg_background, color=c_me, lw=2)
 
-#for psf, color, label in zip([psf_legus, psf_me], [c_legus, c_me], ["LEGUS", "Me"]):
 for psf, color, label in zip([psf_me], [c_me], ["Me"]):
     radial_profile_psf(ax, psf, color, label)
 
